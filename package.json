@@ -1,0 +1,26 @@
+{
+  "name": "calctools",
+  "version": "1.0.0",
+  "description": "Free online calculators and generators - Speed, Fitness, Name & Utility Tools",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve . -p 3000",
+    "dev": "npx serve . -p 3000 -o",
+    "build": "echo 'Static site - no build step required'"
+  },
+  "keywords": [
+    "calculator",
+    "generator",
+    "tools",
+    "asphalt",
+    "speed",
+    "fitness",
+    "sat",
+    "names"
+  ],
+  "author": "CalcTools",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}

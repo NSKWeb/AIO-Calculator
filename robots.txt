@@ -1,0 +1,11 @@
+# robots.txt for CalcTools
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://calctools.com/sitemap.xml
+
+# Disallow any private or test directories if needed
+# Disallow: /private/
+# Disallow: /test/
