@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAT Score Estimator – Convert Raw Scores to Scaled Scores</title>
+  <meta name="description" content="Free SAT score estimator. Convert your raw Math and Reading & Writing scores to estimated scaled SAT scores.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="/tools/sat-score-estimator.html">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="/" class="logo">🧮 CalcTools</a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="tool-page">
+      <div class="tool-header">
+        <h1>📚 SAT Score Estimator</h1>
+        <p>Convert your raw SAT scores to estimated scaled scores</p>
+      </div>
+
+      <div class="calculator-form">
+        <div class="form-group">
+          <label for="mathScore">Math Raw Score (0-58)</label>
+          <input type="number" id="mathScore" placeholder="Enter Math raw score" min="0" max="58" step="1">
+          <div class="error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;"></div>
+        </div>
+        <div class="form-group">
+          <label for="rwScore">Reading & Writing Raw Score (0-96)</label>
+          <input type="number" id="rwScore" placeholder="Enter Reading & Writing raw score" min="0" max="96" step="1">
+          <div class="error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;"></div>
+        </div>
+        <button type="button" class="btn" onclick="calculateSATScore()">Calculate SAT Score</button>
+      </div>
+
+      <div class="results" id="results">
+        <h3>Estimated SAT Scores</h3>
+        <div class="result-item">
+          <span class="label">Math Section Score</span>
+          <span class="value" id="mathScaled">-</span>
+        </div>
+        <div class="result-item">
+          <span class="label">Reading & Writing Section Score</span>
+          <span class="value" id="rwScaled">-</span>
+        </div>
+        <div class="result-item" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark));">
+          <span class="label" style="color: white;">Total SAT Score</span>
+          <span class="value" id="totalScore" style="color: white;">-</span>
+        </div>
+      </div>
+
+      <div class="related-tools">
+        <h3>Related Tools</h3>
+        <div class="related-tools-grid">
+          <a href="/tools/asphalt-calculator.html" class="tool-card">
+            <div class="icon">🏗️</div>
+            <h4>Asphalt Calculator</h4>
+          </a>
+          <a href="/tools/one-rep-max-calculator.html" class="tool-card">
+            <div class="icon">💪</div>
+            <h4>One Rep Max</h4>
+          </a>
+          <a href="/tools/headcanon-generator.html" class="tool-card">
+            <div class="icon">🎭</div>
+            <h4>Headcanon Generator</h4>
+          </a>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <h3>About This Calculator</h3>
+        <p style="color: var(--gray); line-height: 1.8;">This SAT score estimator converts raw scores (number of correct answers) to estimated scaled scores based on the current SAT format. The SAT consists of two sections: Math and Reading & Writing, each scored on a scale of 200-800, for a total possible score of 1600.</p>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Score Ranges:</strong></p>
+        <ul style="color: var(--gray); line-height: 1.8; margin-left: 2rem; margin-bottom: 1rem;">
+          <li>Math: 44 questions, raw score 0-58</li>
+          <li>Reading & Writing: 54 questions, raw score 0-96</li>
+          <li>Each section: 200-800 points</li>
+          <li>Total score: 400-1600 points</li>
+        </ul>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Good to Know:</strong> Actual scaled scores may vary slightly depending on the specific test form difficulty (equating). This calculator provides estimates based on average conversion tables.</p>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Disclaimer:</strong> This tool provides estimates only. Actual SAT scores are determined by the College Board using their specific equating process. Use this for practice test scoring only.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2024 CalcTools. <a href="/legal/disclaimer.html">Disclaimer</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Approximate raw to scaled score conversion tables
+    function getMathScaledScore(raw) {
+      if (raw <= 0) return 200;
+      if (raw >= 58) return 800;
+
+      const conversionTable = [
+        [0, 200], [1, 200], [2, 210], [3, 230], [4, 250],
+        [5, 260], [6, 280], [7, 290], [8, 310], [9, 320],
+        [10, 340], [11, 350], [12, 360], [13, 380], [14, 390],
+        [15, 400], [16, 420], [17, 430], [18, 440], [19, 450],
+        [20, 460], [21, 470], [22, 480], [23, 490], [24, 500],
+        [25, 510], [26, 520], [27, 530], [28, 540], [29, 550],
+        [30, 560], [31, 570], [32, 580], [33, 590], [34, 600],
+        [35, 610], [36, 620], [37, 630], [38, 640], [39, 650],
+        [40, 660], [41, 670], [42, 680], [43, 690], [44, 700],
+        [45, 710], [46, 720], [47, 730], [48, 740], [49, 750],
+        [50, 760], [51, 770], [52, 780], [53, 790], [54, 800],
+        [55, 800], [56, 800], [57, 800]
+      ];
+
+      return interpolateScore(raw, conversionTable);
+    }
+
+    function getRWScaledScore(raw) {
+      if (raw <= 0) return 200;
+      if (raw >= 96) return 800;
+
+      const conversionTable = [
+        [0, 200], [1, 200], [2, 200], [3, 210], [4, 220],
+        [5, 230], [6, 240], [7, 250], [8, 260], [9, 270],
+        [10, 280], [11, 290], [12, 300], [13, 310], [14, 320],
+        [15, 330], [16, 340], [17, 350], [18, 360], [19, 370],
+        [20, 380], [21, 390], [22, 400], [23, 410], [24, 420],
+        [25, 430], [26, 440], [27, 450], [28, 460], [29, 470],
+        [30, 480], [31, 490], [32, 500], [33, 510], [34, 520],
+        [35, 530], [36, 540], [37, 550], [38, 560], [39, 570],
+        [40, 580], [41, 590], [42, 600], [43, 610], [44, 620],
+        [45, 630], [46, 640], [47, 650], [48, 660], [49, 670],
+        [50, 680], [51, 690], [52, 700], [53, 710], [54, 720],
+        [55, 730], [56, 740], [57, 750], [58, 760], [59, 770],
+        [60, 780], [61, 790], [62, 800], [63, 800], [64, 800],
+        [65, 800], [66, 800], [67, 800], [68, 800], [69, 800],
+        [70, 800], [71, 800], [72, 800], [73, 800], [74, 800],
+        [75, 800], [76, 800], [77, 800], [78, 800], [79, 800],
+        [80, 800], [81, 800], [82, 800], [83, 800], [84, 800],
+        [85, 800], [86, 800], [87, 800], [88, 800], [89, 800],
+        [90, 800], [91, 800], [92, 800], [93, 800], [94, 800],
+        [95, 800]
+      ];
+
+      return interpolateScore(raw, conversionTable);
+    }
+
+    function interpolateScore(raw, table) {
+      for (let i = 0; i < table.length - 1; i++) {
+        if (raw >= table[i][0] && raw <= table[i + 1][0]) {
+          if (table[i][1] === table[i + 1][1]) {
+            return table[i][1];
+          }
+          const ratio = (raw - table[i][0]) / (table[i + 1][0] - table[i][0]);
+          return Math.round(table[i][1] + ratio * (table[i + 1][1] - table[i][1]));
+        }
+      }
+      return table[table.length - 1][1];
+    }
+
+    function calculateSATScore() {
+      const mathInput = document.getElementById('mathScore');
+      const rwInput = document.getElementById('rwScore');
+
+      // Clear previous errors
+      mathInput.nextElementSibling.style.display = 'none';
+      rwInput.nextElementSibling.style.display = 'none';
+
+      const mathRaw = parseInt(mathInput.value);
+      const rwRaw = parseInt(rwInput.value);
+
+      if (isNaN(mathRaw) || mathRaw < 0 || mathRaw > 58) {
+        showError(mathInput, 'Please enter a score between 0-58');
+        return;
+      }
+      if (isNaN(rwRaw) || rwRaw < 0 || rwRaw > 96) {
+        showError(rwInput, 'Please enter a score between 0-96');
+        return;
+      }
+
+      // Calculate scaled scores
+      const mathScaled = getMathScaledScore(mathRaw);
+      const rwScaled = getRWScaledScore(rwRaw);
+      const total = mathScaled + rwScaled;
+
+      // Display results
+      document.getElementById('mathScaled').textContent = mathScaled;
+      document.getElementById('rwScaled').textContent = rwScaled;
+      document.getElementById('totalScore').textContent = total;
+
+      document.getElementById('results').classList.add('show');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function showError(input, message) {
+      const errorDiv = input.nextElementSibling;
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

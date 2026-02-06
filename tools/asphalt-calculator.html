@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asphalt Calculator – Estimate Asphalt Quantity & Cost</title>
+  <meta name="description" content="Free asphalt calculator to estimate required asphalt quantity in tons and estimated cost for construction projects.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="/tools/asphalt-calculator.html">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="/" class="logo">🧮 CalcTools</a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="tool-page">
+      <div class="tool-header">
+        <h1>🏗️ Asphalt Calculator</h1>
+        <p>Calculate the amount of asphalt needed for your project</p>
+      </div>
+
+      <div class="calculator-form">
+        <div class="form-group">
+          <label for="length">Length (feet)</label>
+          <input type="number" id="length" placeholder="Enter length" min="0" step="0.1">
+          <div class="error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;"></div>
+        </div>
+        <div class="form-group">
+          <label for="width">Width (feet)</label>
+          <input type="number" id="width" placeholder="Enter width" min="0" step="0.1">
+          <div class="error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;"></div>
+        </div>
+        <div class="form-group">
+          <label for="thickness">Thickness (inches)</label>
+          <input type="number" id="thickness" placeholder="Enter thickness" min="0" step="0.1">
+          <div class="error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;"></div>
+        </div>
+        <div class="form-group">
+          <label for="costPerTon">Cost per ton (optional)</label>
+          <input type="number" id="costPerTon" placeholder="Enter cost per ton" min="0" step="0.01">
+          <div class="error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;"></div>
+        </div>
+        <button type="button" class="btn" onclick="calculateAsphalt()">Calculate</button>
+      </div>
+
+      <div class="results" id="results">
+        <h3>Results</h3>
+        <div class="result-item">
+          <span class="label">Area (sq ft)</span>
+          <span class="value" id="areaResult">-</span>
+        </div>
+        <div class="result-item">
+          <span class="label">Volume (cubic ft)</span>
+          <span class="value" id="volumeResult">-</span>
+        </div>
+        <div class="result-item">
+          <span class="label">Asphalt Required (tons)</span>
+          <span class="value" id="tonsResult">-</span>
+        </div>
+        <div class="result-item" id="costRow" style="display: none;">
+          <span class="label">Estimated Cost</span>
+          <span class="value" id="costResult">-</span>
+        </div>
+      </div>
+
+      <div class="related-tools">
+        <h3>Related Tools</h3>
+        <div class="related-tools-grid">
+          <a href="/tools/car-speed-test.html" class="tool-card">
+            <div class="icon">🚗</div>
+            <h4>Car Speed Test</h4>
+          </a>
+          <a href="/tools/flight-speed-estimator.html" class="tool-card">
+            <div class="icon">✈️</div>
+            <h4>Flight Speed</h4>
+          </a>
+          <a href="/tools/one-rep-max-calculator.html" class="tool-card">
+            <div class="icon">💪</div>
+            <h4>One Rep Max</h4>
+          </a>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <h3>About This Calculator</h3>
+        <p style="color: var(--gray); line-height: 1.8;">This asphalt calculator helps you estimate the amount of asphalt needed for paving projects. It calculates based on standard asphalt density of approximately 145 pounds per cubic foot. Always add 5-10% extra to your order to account for waste and compaction.</p>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Disclaimer:</strong> This calculator provides estimates only. Actual requirements may vary based on specific project conditions, asphalt mix design, and compaction methods. Consult with a professional for accurate project planning.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2024 CalcTools. <a href="/legal/disclaimer.html">Disclaimer</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function calculateAsphalt() {
+      const lengthInput = document.getElementById('length');
+      const widthInput = document.getElementById('width');
+      const thicknessInput = document.getElementById('thickness');
+      const costPerTonInput = document.getElementById('costPerTon');
+
+      // Clear previous errors
+      [lengthInput, widthInput, thicknessInput, costPerTonInput].forEach(input => {
+        input.nextElementSibling.style.display = 'none';
+      });
+
+      // Validate inputs
+      const length = parseFloat(lengthInput.value);
+      const width = parseFloat(widthInput.value);
+      const thickness = parseFloat(thicknessInput.value);
+      const costPerTon = parseFloat(costPerTonInput.value) || 0;
+
+      if (isNaN(length) || length <= 0) {
+        showError(lengthInput, 'Please enter a valid length');
+        return;
+      }
+      if (isNaN(width) || width <= 0) {
+        showError(widthInput, 'Please enter a valid width');
+        return;
+      }
+      if (isNaN(thickness) || thickness <= 0) {
+        showError(thicknessInput, 'Please enter a valid thickness');
+        return;
+      }
+
+      // Calculate
+      const area = length * width;
+      const thicknessInFeet = thickness / 12;
+      const volume = area * thicknessInFeet;
+      const asphaltDensity = 145; // pounds per cubic foot
+      const tons = (volume * asphaltDensity) / 2000;
+
+      // Display results
+      document.getElementById('areaResult').textContent = formatNumber(area, 2) + ' sq ft';
+      document.getElementById('volumeResult').textContent = formatNumber(volume, 2) + ' cu ft';
+      document.getElementById('tonsResult').textContent = formatNumber(tons, 2) + ' tons';
+
+      if (costPerTon > 0) {
+        document.getElementById('costRow').style.display = 'flex';
+        document.getElementById('costResult').textContent = '$' + formatNumber(tons * costPerTon, 2);
+      } else {
+        document.getElementById('costRow').style.display = 'none';
+      }
+
+      document.getElementById('results').classList.add('show');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function showError(input, message) {
+      const errorDiv = input.nextElementSibling;
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+    }
+
+    function formatNumber(num, decimals = 2) {
+      return num.toLocaleString('en-US', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flight Speed Estimator – Calculate Aircraft Speed</title>
+  <meta name="description" content="Free flight speed calculator. Estimate average aircraft speed in mph and km/h based on flight distance and time.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="/tools/flight-speed-estimator.html">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="/" class="logo">🧮 CalcTools</a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="tool-page">
+      <div class="tool-header">
+        <h1>✈️ Flight Speed Estimator</h1>
+        <p>Calculate the average speed of any flight</p>
+      </div>
+
+      <div class="calculator-form">
+        <div class="form-group">
+          <label for="distance">Flight Distance (miles)</label>
+          <input type="number" id="distance" placeholder="Enter flight distance" min="0" step="1">
+          <div class="error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;"></div>
+        </div>
+        <div class="form-group">
+          <label for="flightTime">Flight Time (hours)</label>
+          <input type="number" id="flightTime" placeholder="Enter flight time in hours" min="0" step="0.01">
+          <div class="error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;"></div>
+        </div>
+        <button type="button" class="btn" onclick="calculateFlightSpeed()">Calculate Speed</button>
+      </div>
+
+      <div class="results" id="results">
+        <h3>Flight Speed Results</h3>
+        <div class="result-item">
+          <span class="label">Average Speed (mph)</span>
+          <span class="value" id="mphResult">-</span>
+        </div>
+        <div class="result-item">
+          <span class="label">Average Speed (km/h)</span>
+          <span class="value" id="kmhResult">-</span>
+        </div>
+        <div class="result-item">
+          <span class="label">Average Speed (knots)</span>
+          <span class="value" id="knotsResult">-</span>
+        </div>
+      </div>
+
+      <div class="related-tools">
+        <h3>Related Tools</h3>
+        <div class="related-tools-grid">
+          <a href="/tools/car-speed-test.html" class="tool-card">
+            <div class="icon">🚗</div>
+            <h4>Car Speed Test</h4>
+          </a>
+          <a href="/tools/asphalt-calculator.html" class="tool-card">
+            <div class="icon">🏗️</div>
+            <h4>Asphalt Calculator</h4>
+          </a>
+          <a href="/tools/sat-score-estimator.html" class="tool-card">
+            <div class="icon">📚</div>
+            <h4>SAT Score Estimator</h4>
+          </a>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <h3>About This Calculator</h3>
+        <p style="color: var(--gray); line-height: 1.8;">This flight speed estimator calculates the average speed of an aircraft based on the total distance traveled and flight duration. This includes time spent taxiing, taking off, cruising, and landing.</p>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Typical Aircraft Speeds:</strong></p>
+        <ul style="color: var(--gray); line-height: 1.8; margin-left: 2rem; margin-bottom: 1rem;">
+          <li>Commercial jets: 500-600 mph (cruising speed)</li>
+          <li>Regional jets: 400-500 mph</li>
+          <li>Propeller aircraft: 200-350 mph</li>
+          <li>Helicopters: 100-160 mph</li>
+        </ul>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Disclaimer:</strong> This calculator provides average speed including all phases of flight. Actual cruising speed may be higher. For aviation purposes, always use official flight data.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2024 CalcTools. <a href="/legal/disclaimer.html">Disclaimer</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function calculateFlightSpeed() {
+      const distanceInput = document.getElementById('distance');
+      const timeInput = document.getElementById('flightTime');
+
+      // Clear previous errors
+      distanceInput.nextElementSibling.style.display = 'none';
+      timeInput.nextElementSibling.style.display = 'none';
+
+      const distance = parseFloat(distanceInput.value);
+      const time = parseFloat(timeInput.value);
+
+      if (isNaN(distance) || distance <= 0) {
+        showError(distanceInput, 'Please enter a valid distance');
+        return;
+      }
+      if (isNaN(time) || time <= 0) {
+        showError(timeInput, 'Please enter a valid flight time');
+        return;
+      }
+
+      // Calculate speeds
+      const mph = distance / time;
+      const kmh = mph * 1.60934;
+      const knots = mph * 0.868976;
+
+      // Display results
+      document.getElementById('mphResult').textContent = formatNumber(mph, 1) + ' mph';
+      document.getElementById('kmhResult').textContent = formatNumber(kmh, 1) + ' km/h';
+      document.getElementById('knotsResult').textContent = formatNumber(knots, 1) + ' knots';
+
+      document.getElementById('results').classList.add('show');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function showError(input, message) {
+      const errorDiv = input.nextElementSibling;
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+    }
+
+    function formatNumber(num, decimals = 2) {
+      return num.toLocaleString('en-US', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Couple Name Generator – Create Combined Names</title>
+  <meta name="description" content="Free couple name generator. Create fun and creative combined names for couples from two input names. Perfect for social media and fun!">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="/tools/couple-name-generator.html">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="/" class="logo">🧮 CalcTools</a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="tool-page">
+      <div class="tool-header">
+        <h1>❤️ Couple Name Generator</h1>
+        <p>Create fun combined names for couples</p>
+      </div>
+
+      <div class="calculator-form">
+        <div class="form-group">
+          <label for="name1">First Name</label>
+          <input type="text" id="name1" placeholder="Enter first name" maxlength="30">
+          <div class="error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;"></div>
+        </div>
+        <div class="form-group">
+          <label for="name2">Second Name</label>
+          <input type="text" id="name2" placeholder="Enter second name" maxlength="30">
+          <div class="error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;"></div>
+        </div>
+        <button type="button" class="btn" onclick="generateCoupleNames()">Generate Names</button>
+      </div>
+
+      <div class="results" id="results">
+        <h3>Couple Name Ideas</h3>
+        <ul class="result-list" id="nameList">
+        </ul>
+      </div>
+
+      <div class="related-tools">
+        <h3>Related Tools</h3>
+        <div class="related-tools-grid">
+          <a href="/tools/surname-generator.html" class="tool-card">
+            <div class="icon">📝</div>
+            <h4>Surname Generator</h4>
+          </a>
+          <a href="/tools/headcanon-generator.html" class="tool-card">
+            <div class="icon">🎭</div>
+            <h4>Headcanon Generator</h4>
+          </a>
+          <a href="/tools/one-rep-max-calculator.html" class="tool-card">
+            <div class="icon">💪</div>
+            <h4>One Rep Max</h4>
+          </a>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <h3>About This Generator</h3>
+        <p style="color: var(--gray); line-height: 1.8;">This couple name generator creates fun and creative combined names by blending two names together in various ways. It's perfect for social media usernames, playful nicknames, or just for fun!</p>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>How it works:</strong> The generator uses different blending techniques:</p>
+        <ul style="color: var(--gray); line-height: 1.8; margin-left: 2rem; margin-bottom: 1rem;">
+          <li>First part of Name 1 + last part of Name 2</li>
+          <li>Last part of Name 1 + first part of Name 2</li>
+          <li>First half of both names combined</li>
+          <li>First part of each name</li>
+          <li>Syllable combinations</li>
+        </ul>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Fun Ideas:</strong> Use these generated names for:</p>
+        <ul style="color: var(--gray); line-height: 1.8; margin-left: 2rem; margin-bottom: 1rem;">
+          <li>Social media handles</li>
+          <li>Fan fiction or roleplay characters</li>
+          <li>Playful nicknames</li>
+          <li>Couple hashtags</li>
+        </ul>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Disclaimer:</strong> This tool is for entertainment purposes only. Generated names are meant to be fun and creative.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2024 CalcTools. <a href="/legal/disclaimer.html">Disclaimer</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function generateCoupleNames() {
+      const name1Input = document.getElementById('name1');
+      const name2Input = document.getElementById('name2');
+
+      // Clear previous errors
+      name1Input.nextElementSibling.style.display = 'none';
+      name2Input.nextElementSibling.style.display = 'none';
+
+      const name1 = name1Input.value.trim();
+      const name2 = name2Input.value.trim();
+
+      if (!name1) {
+        showError(name1Input, 'Please enter the first name');
+        return;
+      }
+      if (!name2) {
+        showError(name2Input, 'Please enter the second name');
+        return;
+      }
+
+      const name1Lower = name1.toLowerCase();
+      const name2Lower = name2.toLowerCase();
+
+      // Generate various combinations
+      const combinations = new Set();
+
+      // Method 1: First part of name1 + last part of name2
+      const n1FirstHalf = name1.slice(0, Math.ceil(name1.length / 2));
+      const n2LastHalf = name2.slice(Math.floor(name2.length / 2));
+      combinations.add(capitalize(n1FirstHalf + n2LastHalf));
+
+      // Method 2: Last part of name1 + first part of name2
+      const n1LastHalf = name1.slice(Math.floor(name1.length / 2));
+      const n2FirstHalf = name2.slice(0, Math.ceil(name2.length / 2));
+      combinations.add(capitalize(n1LastHalf + n2FirstHalf));
+
+      // Method 3: First letters from each
+      combinations.add(capitalize(name1[0] + name2));
+
+      // Method 4: Name1 + last letter of name2
+      combinations.add(capitalize(name1 + name2.slice(-3)));
+
+      // Method 5: First 3 letters of name1 + name2
+      if (name1.length >= 3) {
+        combinations.add(capitalize(name1.slice(0, 3) + name2));
+      }
+
+      // Method 6: Name1 + first 3 letters of name2
+      if (name2.length >= 3) {
+        combinations.add(capitalize(name1 + name2.slice(0, 3)));
+      }
+
+      // Method 7: Alternating letters (shortened)
+      let altName = '';
+      const maxLen = Math.min(name1.length, name2.length, 4);
+      for (let i = 0; i < maxLen; i++) {
+        if (i < name1.length) altName += name1[i];
+        if (i < name2.length) altName += name2[i];
+      }
+      combinations.add(capitalize(altName));
+
+      // Method 8: First 2 letters of each
+      if (name1.length >= 2 && name2.length >= 2) {
+        combinations.add(capitalize(name1.slice(0, 2) + name2.slice(0, 2)));
+      }
+
+      // Method 9: Hyphenated combinations
+      combinations.add(capitalize(name1.slice(0, 3) + '-' + name2.slice(0, 3)));
+
+      // Method 10: With '&' or 'and'
+      combinations.add(capitalize(name1 + '&' + name2));
+      combinations.add(capitalize(name1 + 'and' + name2));
+
+      // Display results
+      const list = document.getElementById('nameList');
+      list.innerHTML = '';
+
+      Array.from(combinations).slice(0, 12).forEach(name => {
+        const li = document.createElement('li');
+        li.textContent = name;
+        li.style.cursor = 'pointer';
+        li.onclick = () => {
+          navigator.clipboard.writeText(name);
+          li.textContent = name + ' ✓ Copied!';
+          setTimeout(() => {
+            li.textContent = name;
+          }, 2000);
+        };
+        list.appendChild(li);
+      });
+
+      document.getElementById('results').classList.add('show');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function showError(input, message) {
+      const errorDiv = input.nextElementSibling;
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

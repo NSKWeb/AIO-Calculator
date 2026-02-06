@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surname Generator – Generate Unique Surnames</title>
+  <meta name="description" content="Free surname generator. Create unique surnames for characters in random, fantasy, or modern themes. Perfect for writers and roleplayers.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="/tools/surname-generator.html">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="/" class="logo">🧮 CalcTools</a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="tool-page">
+      <div class="tool-header">
+        <h1>📝 Surname Generator</h1>
+        <p>Generate unique surnames for your characters</p>
+      </div>
+
+      <div class="calculator-form">
+        <div class="form-group">
+          <label for="theme">Theme</label>
+          <select id="theme">
+            <option value="random">Random Mix</option>
+            <option value="fantasy">Fantasy</option>
+            <option value="modern">Modern</option>
+            <option value="nature">Nature-Inspired</option>
+            <option value="noble">Noble/Royal</option>
+          </select>
+        </div>
+        <button type="button" class="btn" onclick="generateSurnames()">Generate Surnames</button>
+      </div>
+
+      <div class="results" id="results">
+        <h3>Generated Surnames</h3>
+        <ul class="result-list" id="surnameList">
+        </ul>
+        <div style="text-align: center; margin-top: 1rem;">
+          <button type="button" class="btn" onclick="generateSurnames()">Generate More</button>
+        </div>
+      </div>
+
+      <div class="related-tools">
+        <h3>Related Tools</h3>
+        <div class="related-tools-grid">
+          <a href="/tools/couple-name-generator.html" class="tool-card">
+            <div class="icon">❤️</div>
+            <h4>Couple Name Generator</h4>
+          </a>
+          <a href="/tools/headcanon-generator.html" class="tool-card">
+            <div class="icon">🎭</div>
+            <h4>Headcanon Generator</h4>
+          </a>
+          <a href="/tools/sat-score-estimator.html" class="tool-card">
+            <div class="icon">📚</div>
+            <h4>SAT Score Estimator</h4>
+          </a>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <h3>About This Generator</h3>
+        <p style="color: var(--gray); line-height: 1.8;">This surname generator creates unique and interesting surnames for your characters. Whether you're writing a novel, creating characters for games, or just need some creative inspiration, this tool can help!</p>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Themes Available:</strong></p>
+        <ul style="color: var(--gray); line-height: 1.8; margin-left: 2rem; margin-bottom: 1rem;">
+          <li><strong>Random Mix:</strong> A combination of all themes</li>
+          <li><strong>Fantasy:</strong> Magical and otherworldly sounding names</li>
+          <li><strong>Modern:</strong> Contemporary and realistic names</li>
+          <li><strong>Nature-Inspired:</strong> Names based on natural elements</li>
+          <li><strong>Noble/Royal:</strong> Elegant and aristocratic names</li>
+        </ul>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Tips for Use:</strong></p>
+        <ul style="color: var(--gray); line-height: 1.8; margin-left: 2rem; margin-bottom: 1rem;">
+          <li>Click on any surname to copy it to your clipboard</li>
+          <li>Combine with first names to create full character names</li>
+          <li>Use different themes for different character backgrounds</li>
+          <li>Mix and match parts of generated surnames for custom names</li>
+        </ul>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Disclaimer:</strong> This tool generates random names for creative and entertainment purposes only. Any resemblance to real surnames is coincidental.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2024 CalcTools. <a href="/legal/disclaimer.html">Disclaimer</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const fantasySurnames = [
+      "Stormwind", "Shadowmere", "Lightbringer", "Dawnstrider", "Nightshade",
+      "Ironforge", "Goldleaf", "Silvermoon", "Fireborn", "Frostwhisper",
+      "Thornheart", "Starweaver", "Moonshadow", "Sunrunner", "Earthshaker",
+      "Stormcaller", "Darkbane", "Brightblade", "Ravenflight", "Wolfsong",
+      "Ashfall", "Winterborn", "Summersong", "Autumnleaf", "Springtide",
+      "Dragonheart", "Phoenixfire", "Griffinwing", "Stormcrow", "Nightfall",
+      "Shadowstrike", "Lightweaver", "Frostfall", "Thunderstrike", "Aurelius",
+      "Valerius", "Blackwood", "Whitelock", "Goldenrod", "Silverhand",
+      "Stormrage", "Bloodfang", "Ironwood", "Ashford", "Blackthorn"
+    ];
+
+    const modernSurnames = [
+      "Anderson", "Thompson", "Mitchell", "Robinson", "Harrison",
+      "Chambers", "Nicholson", "Ferguson", "Hamilton", "Cunningham",
+      "Bennett", "Lawrence", "Stevens", "Matthews", "Fisher",
+      "Morgan", "Phillips", "Richards", "Bailey", "Coleman",
+      "Jenkins", "Murphy", "Sullivan", "Anderson", "Wilson",
+      "Graham", "Robertson", "Davidson", "Henderson", "Macdonald",
+      "Campbell", "Reid", "Taylor", "Brown", "Smith",
+      "Jones", "Williams", "Davis", "Miller", "Wilson",
+      "Moore", "Taylor", "Anderson", "Thomas", "Jackson",
+      "White", "Harris", "Martin", "Thompson", "Garcia"
+    ];
+
+    const natureSurnames = [
+      "Riversong", "Meadowlark", "Stormwind", "Thornbush", "Nightshade",
+      "Willowbrook", "Foxglove", "Morningsky", "Wildflower", "Frostpine",
+      "Stonewalker", "Swiftwater", "Dewdrop", "Sunfern", "Moonbreeze",
+      "Hawthorn", "Rowan", "Ivybrook", "Ashwood", "Birchfall",
+      "Oakheart", "Pinecrest", "Mapleleaf", "Cedarwood", "Ferngully",
+      "Bramble", "Thistle", "Rosewood", "Lavender", "Jasmine",
+      "Primrose", "Hazel", "Riverstone", "Mountainbrook", "Valleyfield",
+      "Clearwater", "Springfield", "Summerfield", "Autumnwood", "Wintergreen",
+      "Forestwalker", "Greenleaf", "Skydancer", "Rainfall", "Snowdrop",
+      "Goldenrod", "Silverleaf", "Bronzewood", "Copperfield", "Ivywood"
+    ];
+
+    const nobleSurnames = [
+      "Montgomery", "Worthington", "Harrington", "Cunningham", "Montague",
+      "Pemberton", "Ravenscroft", "Ashington", "Wellington", "Kensington",
+      "Hamilton", "Fitzroy", "Sterling", "Chamberlain", "Westminster",
+      "Blackwood", "Whitelock", "Cromwell", "Ashford", "Beaumont",
+      "Devereaux", "Lancaster", "Yorkshire", "Middlesex", "Warwick",
+      "Dunmore", "Kingsley", "Queensbury", "Lordsbury", "Goldsborough",
+      "Silverton", "Bronzefield", "Ivoryton", "Crestfield", "Nobleheart",
+      "Highmore", "Grandfield", "Royalton", "Kingsfield", "Crownwell",
+      "Sovereign", "Majestic", "Imperial", "Regalton", "Dominion",
+      "Scepter", "Crestmore", "Herald", "Swordmore", "Shieldfield"
+    ];
+
+    function generateSurnames() {
+      const theme = document.getElementById('theme').value;
+      let surnames = [];
+
+      switch(theme) {
+        case 'fantasy':
+          surnames = shuffleArray([...fantasySurnames]).slice(0, 12);
+          break;
+        case 'modern':
+          surnames = shuffleArray([...modernSurnames]).slice(0, 12);
+          break;
+        case 'nature':
+          surnames = shuffleArray([...natureSurnames]).slice(0, 12);
+          break;
+        case 'noble':
+          surnames = shuffleArray([...nobleSurnames]).slice(0, 12);
+          break;
+        default: // random mix
+          const all = [...fantasySurnames, ...modernSurnames, ...natureSurnames, ...nobleSurnames];
+          surnames = shuffleArray(all).slice(0, 12);
+      }
+
+      // Display results
+      const list = document.getElementById('surnameList');
+      list.innerHTML = '';
+
+      surnames.forEach(surname => {
+        const li = document.createElement('li');
+        li.textContent = surname;
+        li.style.cursor = 'pointer';
+        li.onclick = () => {
+          navigator.clipboard.writeText(surname);
+          li.textContent = surname + ' ✓ Copied!';
+          setTimeout(() => {
+            li.textContent = surname;
+          }, 2000);
+        };
+        list.appendChild(li);
+      });
+
+      document.getElementById('results').classList.add('show');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+  </script>
+</body>
+</html>

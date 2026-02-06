@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One Rep Max Calculator – Estimate Your 1RM</title>
+  <meta name="description" content="Free one rep max calculator. Estimate your one-repetition maximum and get training percentages for weightlifting programs.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="/tools/one-rep-max-calculator.html">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="/" class="logo">🧮 CalcTools</a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="tool-page">
+      <div class="tool-header">
+        <h1>💪 One Rep Max Calculator</h1>
+        <p>Estimate your maximum lifting capacity</p>
+      </div>
+
+      <div class="calculator-form">
+        <div class="form-group">
+          <label for="weight">Weight Lifted (lbs)</label>
+          <input type="number" id="weight" placeholder="Enter weight lifted" min="0" step="1">
+          <div class="error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;"></div>
+        </div>
+        <div class="form-group">
+          <label for="reps">Repetitions Completed</label>
+          <input type="number" id="reps" placeholder="Enter number of reps" min="1" max="20" step="1">
+          <div class="error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;"></div>
+        </div>
+        <button type="button" class="btn" onclick="calculate1RM()">Calculate 1RM</button>
+      </div>
+
+      <div class="results" id="results">
+        <h3>One Rep Max Results</h3>
+        <div class="result-item">
+          <span class="label">Estimated 1RM</span>
+          <span class="value" id="oneRepMax">-</span>
+        </div>
+
+        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem;">Training Percentages</h3>
+        <ul class="result-list" id="trainingPercentages">
+        </ul>
+      </div>
+
+      <div class="related-tools">
+        <h3>Related Tools</h3>
+        <div class="related-tools-grid">
+          <a href="/tools/asphalt-calculator.html" class="tool-card">
+            <div class="icon">🏗️</div>
+            <h4>Asphalt Calculator</h4>
+          </a>
+          <a href="/tools/car-speed-test.html" class="tool-card">
+            <div class="icon">🚗</div>
+            <h4>Car Speed Test</h4>
+          </a>
+          <a href="/tools/couple-name-generator.html" class="tool-card">
+            <div class="icon">❤️</div>
+            <h4>Couple Name Generator</h4>
+          </a>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <h3>About This Calculator</h3>
+        <p style="color: var(--gray); line-height: 1.8;">This one rep max (1RM) calculator uses the Epley formula to estimate your maximum weight for a single repetition based on a submaximal lift. This is useful for setting training goals and determining appropriate weights for different training intensities.</p>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Formula:</strong> 1RM = Weight × (1 + Reps/30)</p>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Training Zones:</strong></p>
+        <ul style="color: var(--gray); line-height: 1.8; margin-left: 2rem; margin-bottom: 1rem;">
+          <li>95-100%: Max effort / Testing</li>
+          <li>90-95%: Strength / Power</li>
+          <li>80-90%: Hypertrophy & Strength</li>
+          <li>70-80%: Hypertrophy</li>
+          <li>60-70%: Endurance</li>
+          <li>50-60%: Warm-up / Technique</li>
+        </ul>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Important:</strong> Actual 1RM may vary. Always use proper form and consider working with a qualified trainer for heavy lifts. Never attempt a true 1RM without proper supervision and safety equipment.</p>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Disclaimer:</strong> This calculator provides estimates only. Actual lifting capacity may vary. Always consult with a fitness professional before attempting heavy lifts.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2024 CalcTools. <a href="/legal/disclaimer.html">Disclaimer</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function calculate1RM() {
+      const weightInput = document.getElementById('weight');
+      const repsInput = document.getElementById('reps');
+
+      // Clear previous errors
+      weightInput.nextElementSibling.style.display = 'none';
+      repsInput.nextElementSibling.style.display = 'none';
+
+      const weight = parseFloat(weightInput.value);
+      const reps = parseInt(repsInput.value);
+
+      if (isNaN(weight) || weight <= 0) {
+        showError(weightInput, 'Please enter a valid weight');
+        return;
+      }
+      if (isNaN(reps) || reps < 1 || reps > 20) {
+        showError(repsInput, 'Please enter between 1-20 reps');
+        return;
+      }
+
+      // Epley formula: 1RM = weight × (1 + reps/30)
+      const oneRepMax = weight * (1 + reps / 30);
+
+      // Display 1RM
+      document.getElementById('oneRepMax').textContent = formatNumber(oneRepMax, 1) + ' lbs';
+
+      // Calculate and display training percentages
+      const percentages = [100, 95, 90, 85, 80, 75, 70, 65, 60, 50];
+      const list = document.getElementById('trainingPercentages');
+      list.innerHTML = '';
+
+      percentages.forEach(percentage => {
+        const weightAtPercent = oneRepMax * (percentage / 100);
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${percentage}%</strong>: ${formatNumber(weightAtPercent, 1)} lbs`;
+        list.appendChild(li);
+      });
+
+      document.getElementById('results').classList.add('show');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function showError(input, message) {
+      const errorDiv = input.nextElementSibling;
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+    }
+
+    function formatNumber(num, decimals = 2) {
+      return num.toLocaleString('en-US', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      });
+    }
+  </script>
+</body>
+</html>

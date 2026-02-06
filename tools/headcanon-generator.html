@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Headcanon Generator – Random Creative Headcanons</title>
+  <meta name="description" content="Free headcanon generator. Generate random creative headcanons for your favorite characters in any universe or genre.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="/tools/headcanon-generator.html">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="/" class="logo">🧮 CalcTools</a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="tool-page">
+      <div class="tool-header">
+        <h1>🎭 Headcanon Generator</h1>
+        <p>Generate random creative headcanons for your characters</p>
+      </div>
+
+      <div class="calculator-form">
+        <div class="form-group">
+          <label for="characterName">Character Name (optional)</label>
+          <input type="text" id="characterName" placeholder="Enter character name" maxlength="50">
+        </div>
+        <div class="form-group">
+          <label for="universe">Universe / Genre (optional)</label>
+          <input type="text" id="universe" placeholder="e.g., Fantasy, Sci-Fi, Modern" maxlength="50">
+        </div>
+        <button type="button" class="btn" onclick="generateHeadcanons()">Generate Headcanons</button>
+      </div>
+
+      <div class="results" id="results">
+        <h3>Generated Headcanons</h3>
+        <ul class="result-list" id="headcanonList">
+        </ul>
+        <div style="text-align: center; margin-top: 1rem;">
+          <button type="button" class="btn" onclick="generateHeadcanons()">Generate More</button>
+        </div>
+      </div>
+
+      <div class="related-tools">
+        <h3>Related Tools</h3>
+        <div class="related-tools-grid">
+          <a href="/tools/couple-name-generator.html" class="tool-card">
+            <div class="icon">❤️</div>
+            <h4>Couple Name Generator</h4>
+          </a>
+          <a href="/tools/surname-generator.html" class="tool-card">
+            <div class="icon">📝</div>
+            <h4>Surname Generator</h4>
+          </a>
+          <a href="/tools/sat-score-estimator.html" class="tool-card">
+            <div class="icon">📚</div>
+            <h4>SAT Score Estimator</h4>
+          </a>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <h3>About This Generator</h3>
+        <p style="color: var(--gray); line-height: 1.8;">This headcanon generator creates random creative ideas and scenarios for characters. Whether you're writing fan fiction, developing original characters, or just having fun, this tool can spark your imagination!</p>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Headcanon Types:</strong></p>
+        <ul style="color: var(--gray); line-height: 1.8; margin-left: 2rem; margin-bottom: 1rem;">
+          <li>Personality traits and quirks</li>
+          <li>Backstory elements</li>
+          <li>Habits and preferences</li>
+          <li>Hidden abilities or secrets</li>
+          <li>Relationship dynamics</li>
+          <li>Fears and dreams</li>
+        </ul>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Tips for Use:</strong></p>
+        <ul style="color: var(--gray); line-height: 1.8; margin-left: 2rem; margin-bottom: 1rem;">
+          <li>Use generated ideas as starting points</li>
+          <li>Combine multiple headcanons for depth</li>
+          <li>Adapt ideas to fit your character's established traits</li>
+          <li>Let contradictions spark interesting story developments</li>
+        </ul>
+        <p style="color: var(--gray); line-height: 1.8;"><strong>Disclaimer:</strong> This tool generates random creative ideas for inspiration and entertainment purposes only.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2024 CalcTools. <a href="/legal/disclaimer.html">Disclaimer</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const headcanonTemplates = [
+      "{name} secretly collects {item} but is embarrassed to admit it.",
+      "{name} has a habit of {habit} whenever they're nervous.",
+      "Despite their public image, {name} actually {contradiction}.",
+      "{name}'s favorite way to relax is {activity} and no one knows why.",
+      "{name} keeps {item} hidden in their room as a good luck charm.",
+      "{name} has never told anyone about {secret}.",
+      "{name} is surprisingly good at {skill} for someone in {universe}.",
+      "{name} believes that {belief} is the key to success.",
+      "{name} has a pet {animal} that they rescued from {location}.",
+      "{name} can't sleep without {condition}.",
+      "{name} has a hidden talent for {talent} that they discovered as a child.",
+      "{name} always {habit} during important meetings.",
+      "{name} writes {thing} in their spare time but never shares them.",
+      "{name} has a fear of {fear} that no one understands.",
+      "{name} carries {item} with them everywhere for {reason}.",
+      "{name} was once {pastEvent} and it changed their perspective on {topic}.",
+      "{name} has a collection of {item} that would surprise everyone.",
+      "{name} secretly {secretActivity} when no one is watching.",
+      "{name} has a recurring dream about {dream} and doesn't know what it means.",
+      "{name} has an unusual superstition about {superstition}.",
+      "{name} can perfectly {skill} but only when {condition}.",
+      "{name}'s childhood hero was {hero} and it influenced their {aspect}.",
+      "{name} has a hidden scar from {event} that they never explain.",
+      "{name} is surprisingly bad at {skill} despite being {adjective}.",
+      "{name} keeps a journal where they write about {topic} every night.",
+      "{name} has a soft spot for {thing} that they won't admit publicly.",
+      "{name} once {accomplishment} but never mentions it.",
+      "{name} has a ritual of {ritual} before every {importantEvent}.",
+      "{name} is secretly learning {skill} and plans to surprise everyone.",
+      "{name} has an unusual fear of {fear} because of {backstory}.",
+      "{name} always carries {item} for nostalgic reasons.",
+      "{name} has a hidden collection of {item} in their {location}.",
+      "{name} speaks {language} fluently but pretends not to.",
+      "{name} has a strange habit of {habit} that they picked up in {location}.",
+      "{name} is allergic to {allergen} but never complains about it.",
+      "{name} has a secret crush on {type} but is too shy to admit it.",
+      "{name} keeps {item} as a reminder of {memory}.",
+      "{name} can't resist {temptation} no matter how hard they try.",
+      "{name} has a tattoo of {tattoo} that represents {meaning}."
+    ];
+
+    const items = [
+      "vintage stamps", "rare books", "unusual rocks", "old photographs",
+      "handmade crafts", "foreign coins", "pressed flowers", "antique maps",
+      "colorful buttons", "unusual teas", "handwritten letters", "concert tickets",
+      "movie posters", "unusual magnets", "handmade jewelry", "seashells",
+      "unusual keychains", "rare plants", "hand-carved figurines", "old newspapers"
+    ];
+
+    const habits = [
+      "humming softly", "tapping their fingers", "twirling their hair",
+      "pacing around", "checking their watch", "adjusting their clothes",
+      "biting their lip", "cracking their knuckles", "sighing deeply",
+      "laughing nervously", "staring at the ceiling", "fidgeting with objects"
+    ];
+
+    const contradictions = [
+      "loves quiet mornings", "enjoys cheesy romance movies",
+      "is excellent at cooking", "has a green thumb", "loves children",
+      "is afraid of heights", "can't swim", "hates coffee",
+      "is secretly very sentimental", "cries at sad movies"
+    ];
+
+    const activities = [
+      "painting watercolors", "playing chess alone", "reading ancient texts",
+      "growing exotic plants", "practicing martial arts", "writing poetry",
+      "baking complex pastries", "learning dead languages", "carving wood",
+      "stargazing", "meditating for hours", "playing musical instruments"
+    ];
+
+    const skills = [
+      "playing the piano", "dancing salsa", "speaking multiple languages",
+      "painting portraits", "solving puzzles", "cooking gourmet meals",
+      "repairing electronics", "writing calligraphy", "growing rare flowers",
+      "building furniture", "singing opera", "doing card tricks"
+    ];
+
+    const secrets = [
+      "their childhood ambition", "their first love", "their biggest regret",
+      "a family secret", "a hidden talent", "a past mistake",
+      "their real age", "their true heritage", "a lost sibling",
+      "a hidden inheritance", "an old rivalry", "a forbidden friendship"
+    ];
+
+    const fears = [
+      "deep water", "enclosed spaces", "being forgotten", "failure",
+      "losing control", "being judged", "darkness", "silence",
+      "thunderstorms", "insects", "heights", "crowds"
+    ];
+
+    const animals = [
+      "stray cat", "injured bird", "abandoned puppy", "wild rabbit",
+      "orphaned squirrel", "lost turtle", "wounded fox", "lonely owl"
+    ];
+
+    const locations = [
+      "an alleyway", "the forest", "a construction site", "the streets",
+      "a dumpster", "an abandoned building", "the countryside", "a storm drain"
+    ];
+
+    function generateHeadcanons() {
+      const nameInput = document.getElementById('characterName');
+      const universeInput = document.getElementById('universe');
+
+      let name = nameInput.value.trim();
+      let universe = universeInput.value.trim();
+
+      if (!name) name = "This character";
+      if (!universe) universe = "this world";
+
+      // Shuffle templates
+      const shuffledTemplates = [...headcanonTemplates].sort(() => Math.random() - 0.5);
+
+      // Generate headcanons
+      const generatedHeadcanons = [];
+      const usedTemplates = new Set();
+
+      for (const template of shuffledTemplates) {
+        if (generatedHeadcanons.length >= 5) break;
+
+        try {
+          let headcanon = template
+            .replace(/{name}/g, name)
+            .replace(/{universe}/g, universe)
+            .replace(/{item}/g, getRandom(items))
+            .replace(/{habit}/g, getRandom(habits))
+            .replace(/{contradiction}/g, getRandom(contradictions))
+            .replace(/{activity}/g, getRandom(activities))
+            .replace(/{skill}/g, getRandom(skills))
+            .replace(/{secret}/g, getRandom(secrets))
+            .replace(/{fear}/g, getRandom(fears))
+            .replace(/{animal}/g, getRandom(animals))
+            .replace(/{location}/g, getRandom(locations))
+            .replace(/{condition}/g, getRandom(["it's raining", "no one's watching", "the moon is full", "music is playing", "they're alone", "they're with friends"]))
+            .replace(/{secretActivity}/g, getRandom(["dances", "sings", "talks to plants", "practices magic", "writes fiction", "draws"]))
+            .replace(/{thing}/g, getRandom(["stories", "poems", "songs", "jokes", "recipes"]))
+            .replace(/{dream}/g, getRandom(["flying", "falling", "a mysterious door", "an old friend", "a burning city", "an endless ocean"]))
+            .replace(/{superstition}/g, getRandom(["black cats", "broken mirrors", "the number 13", "opening umbrellas indoors", "walking under ladders"]))
+            .replace(/{pastEvent}/g, getRandom(["saved a life", "won a competition", "got lost in the wilderness", "met a celebrity", "discovered a hidden place"]))
+            .replace(/{topic}/g, getRandom(["their feelings", "daily events", "future plans", "strange dreams", "secret wishes"]))
+            .replace(/{talent}/g, getRandom(skills))
+            .replace(/{reason}/g, getRandom(["good luck", "sentimental value", "a promise", "superstition", "memories"]))
+            .replace(/{event}/g, getRandom(["a childhood accident", "a battle", "a fall", "a fire", "a mysterious incident"]))
+            .replace(/{accomplishment}/g, getRandom(["climbed a mountain", "wrote a book", "built something incredible", "solved an ancient mystery"]))
+            .replace(/{importantEvent}/g, getRandom(["battle", "meeting", "performance", "journey", "decision"]))
+            .replace(/{aspect}/g, getRandom(["career", "personality", "life choices", "relationships"]))
+            .replace(/{hero}/g, getRandom(["a mysterious traveler", "a local legend", "a family member", "a famous explorer", "an old teacher"]))
+            .replace(/{adjective}/g, getRandom(["talented", "experienced", "skilled", "knowledgeable", "capable"]))
+            .replace(/{ritual}/g, getRandom(["lighting a candle", "drinking tea", "stretching", "meditating", "humming"]))
+            .replace(/{backstory}/g, getRandom(["a childhood incident", "a traumatic event", "a family story", "an old legend"]))
+            .replace(/{temptation}/g, getRandom(["sweet treats", "new gadgets", "adventure", "romance", "mysteries"]))
+            .replace(/{tattoo}/g, getRandom(["a symbol", "a name", "a date", "a phrase", "an image"]))
+            .replace(/{meaning}/g, getRandom(["a lost love", "a victory", "a memory", "a promise", "a belief"]))
+            .replace(/{language}/g, getRandom(["Elvish", "an ancient dialect", "a secret code", "a rare language", "their native tongue"]))
+            .replace(/{allergen}/g, getRandom(["shellfish", "nuts", "dairy", "pollen", "dust"]))
+            .replace(/{type}/g, getRandom(["artists", "scholars", "warriors", "musicians", "adventurers"]))
+            .replace(/{memory}/g, getRandom(["their childhood", "a lost friend", "a past love", "a family home"]))
+            .replace(/{skill}/g, getRandom(skills))
+            .replace(/{belief}/g, getRandom(["hard work", "destiny", "friendship", "courage", "curiosity"]))
+            .replace(/{secret}/g, getRandom(secrets))
+            .replace(/{secret}/g, getRandom(secrets));
+
+          if (!usedTemplates.has(template)) {
+            generatedHeadcanons.push(headcanon);
+            usedTemplates.add(template);
+          }
+        } catch (e) {
+          console.error('Error generating headcanon:', e);
+        }
+      }
+
+      // Display results
+      const list = document.getElementById('headcanonList');
+      list.innerHTML = '';
+
+      generatedHeadcanons.forEach(headcanon => {
+        const li = document.createElement('li');
+        li.textContent = headcanon;
+        list.appendChild(li);
+      });
+
+      document.getElementById('results').classList.add('show');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function getRandom(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+  </script>
+</body>
+</html>
