@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+  // Initialize theme system
+  initTheme();
+
   // Mobile menu toggle
   const navLinks = document.querySelector('.nav-links');
   const menuToggle = document.querySelector('.menu-toggle');
@@ -22,6 +25,68 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+
+// Theme System
+function initTheme() {
+  const html = document.documentElement;
+  const pageDefaultTheme = html.getAttribute('data-theme') || 'light';
+
+  // Try to get user preference: first page-specific, then global, then default
+  const pagePath = window.location.pathname;
+  const pageKey = 'calctools-theme-' + pagePath.replace(/\//g, '-');
+  const storedTheme = localStorage.getItem(pageKey) || localStorage.getItem('calctools-theme-global') || pageDefaultTheme;
+
+  // Apply the theme
+  html.setAttribute('data-theme', storedTheme);
+
+  // Create theme picker UI
+  createThemePicker(storedTheme);
+}
+
+function createThemePicker(currentTheme) {
+  const nav = document.querySelector('nav');
+  if (!nav) return;
+
+  const themePicker = document.createElement('div');
+  themePicker.className = 'theme-picker';
+
+  const select = document.createElement('select');
+  select.setAttribute('aria-label', 'Select theme');
+
+  const themes = [
+    { value: 'light', label: '☀️ Light' },
+    { value: 'dark', label: '🌙 Dark' },
+    { value: 'doctor-loved', label: '🏥 Doctor-Loved' },
+    { value: 'aesthetic', label: '✨ Aesthetic' },
+    { value: 'child-friendly', label: '🌈 Child-Friendly' },
+    { value: 'eye-friendly', label: '📖 Eye-Friendly' }
+  ];
+
+  themes.forEach(theme => {
+    const option = document.createElement('option');
+    option.value = theme.value;
+    option.textContent = theme.label;
+    if (theme.value === currentTheme) {
+      option.selected = true;
+    }
+    select.appendChild(option);
+  });
+
+  select.addEventListener('change', function() {
+    switchTheme(this.value);
+  });
+
+  themePicker.appendChild(select);
+  nav.appendChild(themePicker);
+}
+
+function switchTheme(themeName) {
+  const html = document.documentElement;
+  html.setAttribute('data-theme', themeName);
+
+  // Store user preference - global preference
+  localStorage.setItem('calctools-theme-global', themeName);
+}
 
 // Utility functions for calculators
 function formatNumber(num, decimals = 2) {
